@@ -14,7 +14,7 @@
 Clone or pull from the develop branch before you begin coding.
 ```
 #cloning
-git clone --branch develop ***repo name***
+git clone --branch develop git@github.com:HBARDEV/Koala-Klub-Treehouse.git
 
 #pulling
 git pull origin develop
@@ -101,7 +101,7 @@ gh pr merge <pr number>
 ***Press enter on 'Submit'
 ```
 
-Your code has now been deployed to https://stage.netballfunsquad.com
+Your code has now been deployed to **Your stage domain**
 ***
 ***
 
@@ -118,6 +118,7 @@ gh pr merge <pr number>
 ***Press enter on 'Submit'
 ```
 
-Your code has now been deployed to https://netballfunsquad.com
+Your code has now been deployed to **Your prod domain**
+
 ***
 ***
