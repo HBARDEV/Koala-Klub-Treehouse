@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extend_head %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h3>tree_house Receive</h3>
+
+<div class="container">
+
+  <form id="basicform" method="POST" action="/receive/{{wallet_id}}/">
+    {% csrf_token %}
+    <label for="wallet">Wallet</label>
+    {{form.incoming_address}}
+
+    <label for="address">Quantity</label>
+    {{form.quantity}}
+
+    <label for="memo">Memo</label>
+    {{form.memo}}
+
+
+   {{form.form_label}}
+   <button type="submit">Receive</button>
+ </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extend_footer %}
+
+{% endblock %}

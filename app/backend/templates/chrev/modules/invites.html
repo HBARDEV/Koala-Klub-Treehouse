@@ -1,0 +1,168 @@
+	{% extends 'chrev/elements/layouts/admin.html' %}
+{% load static %}
+
+
+{% block additional_css %}
+ 
+{% endblock %}
+
+
+
+{% block message %}
+{% include 'chrev/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<div id="message">
+</div>     
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Invites Table</h4>
+                    
+                    <div class="d-flex">
+
+                        {% if perms.users.add_customuser %}
+                        <a href="{% url 'users:add-invite' %}" class="btn btn-primary btn-sm ">ADD INVITE  <span class="btn-icon-end">
+                            <i class="fa fa-plus"></i></span>
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-responsive-md">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg">
+                                            <input  type="checkbox" class="form-check-input" id="checkAll" value="">
+                                            <label class="form-check-label" for="checkAll"></label>
+                                        </div>
+                                    </th>
+                                   
+                                    <th>Created</th>
+                                    <th>EMAIL</th>
+                                    <th>Company</th>
+
+
+                                    {% if perms.users.delete_customuser or perms.users.change_customuser or perms.auth.change_permission %}
+                                    <th></th>
+                                    {% endif %}
+
+
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% csrf_token %}
+                                {% for invite in invites %}
+                                <tr id="{{ invite.id }}">
+                                    <td>
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
+                                            <input name="invite_id[]" type="checkbox" class="form-check-input" value="{{ invite.id }}">
+                                            <label class="form-check-label" for="checkbox-{{ invite.id }}"></label>
+                                        </div>
+                                    </td>
+
+                                    <td><strong>{{ invite.created.date }}</strong></td>
+
+                                    <td><strong>{{ invite.email }}</strong></td>
+                                    <td><strong>{% if invite.company %}{{ invite.company.title }}{%else%}NEW COMPANY{%endif%}</strong></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if invite.is_active %}
+                                            <i class="fa fa-circle text-success me-1"></i> 
+                                            {% else %} 
+                                            <i class="fa fa-circle text-dark me-1"></i> 
+
+                                            {% endif %}
+                                        </div>
+                                    
+                                    </td>
+
+                                    <td>
+                                        <div class="sweetalert">
+                                            <div class="d-flex">
+                                                {% if perms.users.delete_customuser and invite.is_active %}
+                                                <a href="{% url 'users:edit-invite' id=invite.id %}" class="btn btn-success shadow btn-xs sharp sweet-success-edit"><i class="fas fa-pencil-alt text-white"></i></a>
+                                               
+                                                {% endif %}
+                                            </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <nav mt-5>
+
+                        <p>
+                            <span class="current">
+                            Page {{ invites.number }} of {{ invites.paginator.num_pages }}.
+                           </span> 
+                           </p>
+                           
+
+                        <ul class="pagination pagination-gutter  justify-content-end">
+                            
+                                <li class="page-item page-indicator ">
+                                    <a class="page-link" href="{% if invites.has_previous %}
+                                                                ?page={{ invites.previous_page_number }}
+                                                                {% else %}
+                                                                javascript:void(0);
+                                                                {% endif %}">
+                                        <i class="la la-angle-left"></i></a>
+                                </li>
+
+                            {% for i in invites.paginator.page_range|slice:":3" %}
+
+                                <li class="page-item {% if invites.number == i %}
+                                                    active{% endif %}"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                            
+                            {% endfor %}
+
+                            
+                            {% if invites.number > 3 %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ invites.number }}">{{ invites.number }}</a></li>
+                            {% endif %}
+                            
+                            <li class="page-item page-indicator ">
+                                <a class="page-link"  href="{% if invites.has_next %}
+                                                            ?page={{ invites.next_page_number }}
+                                                            {% else %}
+                                                            javascript:void(0);
+                                                            {% endif %}">
+                                    <i class="la la-angle-right"></i></a>
+                            </li>
+                            <li>
+
+                              
+
+                            </li>
+                        </ul>
+                       
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+
+   
+{% endblock %}
+

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<h1>Transactions</h1>
+<table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Wallet address</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Incoming wallet</th>
+        <th scope="col">Outgoing wallet</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>{{object.id}}</td>
+        <td>{{object.wallet.address}}</td>
+        <td>{{object.quantity}}</td>
+        {% if object.incoming_address %}
+        <td>{{object.incoming_address}}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+        {% if object.outgoing_address %}
+        <td>{{object.outgoing_address}}</td>
+        {% else %}
+        <td>-</td>
+        {% endif %}
+        {% if object.processing_status == 0 %}
+        <td>Awaiting processing</td>
+        {% elif object.processing_status == 1 %}
+        <td>Processed</td>
+        {% else %}
+        <td>Cancelled</td>
+        {% endif %}
+        <td>
+            <table class="table table-dark">
+                <tr>
+                    <td><a role="button" class="btn btn-success" href="{{object.get_absolute_url}}" >View</a></td>
+                </tr>
+            </table>
+        </td>
+
+
+      {% endfor %}
+
+
+    </tbody>
+</table>
+{% endblock %}

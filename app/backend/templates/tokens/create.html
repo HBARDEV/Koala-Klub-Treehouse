@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block extend_head %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<h3>tree_house Whitelist address</h3>
+
+<div class="container">
+
+  <form id="basicform" method="POST" action="/create-address/">
+    {% csrf_token %}
+    <label for="wallet">Wallet</label>
+    {{form.wallet}}
+
+    <label for="address">Address to whitelist</label>
+    {{form.wallet_address}}
+
+    <label for="nick_name">Name</label>
+    {{form.nick_name}}
+
+   {{form.form_label}}
+   <button type="submit">Whitelist</button>
+ </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extend_footer %}
+
+{% endblock %}

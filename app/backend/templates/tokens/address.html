@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h3>Address - {{object.address}}</h3>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form>
+                <label for="stock">ID</label>
+                <input type="text" readonly value="{{object.id}}">
+                <label for="stock">Wallet ID</label>
+                <input type="text" readonly value="{{object.wallet.id}}">
+                <label for="stock">Wallet Address</label>
+                <input type="text" readonly value="{{object.wallet.address}}">
+                <label for="stock">White listed address</label>
+                <input type="text" readonly value="{{object.wallet_address}}">
+                <label for="stock">Name</label>
+                <input type="text" readonly value="{{object.nick_name}}">
+
+            </form>
+        </div>
+
+    
+</div>
+
+</div>
+{% endblock %}

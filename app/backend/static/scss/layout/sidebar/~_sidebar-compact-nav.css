@@ -1,0 +1,61 @@
+@media (min-width: 767px) {
+  [data-sidebar-style="compact"] .deznav .nav-user {
+    display: none; }
+  [data-sidebar-style="compact"] .deznav .metismenu li {
+    text-align: center; }
+    [data-sidebar-style="compact"] .deznav .metismenu li a {
+      padding: 0.625rem 0.9375rem 0.625rem 0.9375rem; }
+      [data-sidebar-style="compact"] .deznav .metismenu li a svg {
+        max-width: 21px;
+        max-height: 21px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto; }
+    [data-sidebar-style="compact"] .deznav .metismenu li ul:after {
+      content: none; }
+  [data-sidebar-style="compact"] .nav-text {
+    display: inline-block;
+    margin-top: 0.3125rem; }
+  [data-sidebar-style="compact"] .nav-label.first {
+    display: none; }
+  [data-sidebar-style="compact"] .nav-badge {
+    display: none; }
+  [data-sidebar-style="compact"] .footer {
+    padding-left: 9.375rem; }
+  [data-sidebar-style="compact"] .content-body {
+    margin-left: 9.375rem; } }
+[data-layout="horizontal"][data-sidebar-style="compact"] .footer {
+  padding-left: 0; }
+[data-layout="horizontal"][data-sidebar-style="compact"] .content-body {
+  margin-left: 0; }
+[data-layout="horizontal"][data-sidebar-style="compact"] .deznav .metismenu {
+  padding: 0 30px; }
+
+[data-layout="vertical"][data-sidebar-style="compact"] .deznav {
+  width: 9.375rem; }
+  [data-layout="vertical"][data-sidebar-style="compact"] .deznav .metismenu ul {
+    margin-left: 0;
+    border: 0;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 0; }
+    [data-theme-version="dark"][data-layout="vertical"][data-sidebar-style="compact"] .deznav .metismenu ul {
+      background: 255, 255, 255, 0.05; }
+    [data-layout="vertical"][data-sidebar-style="compact"] .deznav .metismenu ul a:before {
+      content: none; }
+    [data-layout="vertical"][data-sidebar-style="compact"] .deznav .metismenu ul ul a {
+      padding: 0.625rem 0.9375rem; }
+  [data-layout="vertical"][data-sidebar-style="compact"] .deznav .metismenu > li > a.has-arrow::after {
+    top: 1px;
+    display: inline-block;
+    right: auto;
+    margin-left: 5px;
+    position: relative;
+    width: 7px;
+    height: 7px;
+    border-width: 2px 0px 0px 2px; }
+    [direction="rtl"][data-layout="vertical"][data-sidebar-style="compact"] .deznav .metismenu > li > a.has-arrow::after {
+      left: auto;
+      margin-left: 0;
+      margin-right: 5px; }
+
+/*# sourceMappingURL=~_sidebar-compact-nav.css.map */

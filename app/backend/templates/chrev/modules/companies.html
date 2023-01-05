@@ -1,0 +1,157 @@
+	{% extends 'chrev/elements/layouts/admin.html' %}
+{% load static %}
+
+
+{% block additional_css %}
+ 
+{% endblock %}
+
+
+
+{% block message %}
+{% include 'chrev/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<div id="message">
+</div>     
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Companies Table</h4>
+                    
+                    <div class="d-flex">
+
+                        {% if perms.users.add_customuser %}
+                        <a href="{% url 'users:add-company' %}" class="btn btn-primary btn-sm ">ADD COMPANY  <span class="btn-icon-end">
+                            <i class="fa fa-plus"></i></span>
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-responsive-md">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg">
+                                            <input  type="checkbox" class="form-check-input" id="checkAll" value="">
+                                            <label class="form-check-label" for="checkAll"></label>
+                                        </div>
+                                    </th>
+                                   
+                                    <th>Created</th>
+                                    <th>Title</th>
+                                    <th>Linked users</th>
+
+
+                                    {% if perms.users.delete_customuser or perms.users.change_customuser or perms.auth.change_permission %}
+                                    <th></th>
+                                    {% endif %}
+
+
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% csrf_token %}
+                                {% for company in companies %}
+                                <tr id="{{ company.id }}">
+                                    <td>
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
+                                            <input name="company_id[]" type="checkbox" class="form-check-input" value="{{ company.id }}">
+                                            <label class="form-check-label" for="checkbox-{{ company.id }}"></label>
+                                        </div>
+                                    </td>
+
+                                    <td><strong>{{ company.created.date }}</strong></td>
+
+                                    <td><strong>{{ company.title }}</strong></td>
+
+                                    <td><strong>{{ company.get_all_users|length }}</strong></td>
+                                    <td>
+                                        <div class="sweetalert">
+                                            <div class="d-flex">
+                                                {% if perms.users.delete_customuser %}
+                                                <a href="{% url 'users:edit-company' id=company.id %}" class="btn btn-success shadow btn-xs sharp sweet-success-edit"><i class="fas fa-pencil-alt text-white"></i></a>
+                                               
+                                                {% endif %}
+                                            </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <nav mt-5>
+
+                        <p>
+                            <span class="current">
+                            Page {{ companies.number }} of {{ companies.paginator.num_pages }}.
+                           </span> 
+                           </p>
+                           
+
+                        <ul class="pagination pagination-gutter  justify-content-end">
+                            
+                                <li class="page-item page-indicator ">
+                                    <a class="page-link" href="{% if companies.has_previous %}
+                                                                ?page={{ companies.previous_page_number }}
+                                                                {% else %}
+                                                                javascript:void(0);
+                                                                {% endif %}">
+                                        <i class="la la-angle-left"></i></a>
+                                </li>
+
+                            {% for i in companies.paginator.page_range|slice:":3" %}
+
+                                <li class="page-item {% if companies.number == i %}
+                                                    active{% endif %}"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                            
+                            {% endfor %}
+
+                            
+                            {% if companies.number > 3 %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ companies.number }}">{{ companies.number }}</a></li>
+                            {% endif %}
+                            
+                            <li class="page-item page-indicator ">
+                                <a class="page-link"  href="{% if companies.has_next %}
+                                                            ?page={{ companies.next_page_number }}
+                                                            {% else %}
+                                                            javascript:void(0);
+                                                            {% endif %}">
+                                    <i class="la la-angle-right"></i></a>
+                            </li>
+                            <li>
+
+                              
+
+                            </li>
+                        </ul>
+                       
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+
+   
+{% endblock %}
+

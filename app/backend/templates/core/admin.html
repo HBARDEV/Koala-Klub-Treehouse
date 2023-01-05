@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<h1>Admin page</h1>
+{% if address_approval %}
+<table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Wallet</th>
+        <th scope="col">Address</th>
+        <th scope="col">Name</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for object in address_approval %}
+      <tr>
+        <td>{{object.id}}</td>
+        <td>{{object.wallet.address}}</td>
+        <td>{{object.wallet_address}}</td>
+        <td>{{object.nick_name}}</td>
+        <td>
+            <table class="table table-dark">
+                <tr>
+                    <td><a role="button" class="btn btn-success" href="/admin-dashboard/manage-address/{{object.id}}/approve/" >Approve</a></td>
+                </tr>
+                <tr>
+                    <td><a role="button" class="btn btn-warning" href="/admin-dashboard/manage-address/{{object.id}}/reject/" >Reject</a></td>
+                </tr>
+            </table>
+        </td>
+
+
+      {% endfor %}
+
+
+    </tbody>
+</table>
+{% endif %}
+
+{% if outstanding_transactions %}
+<table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Wallet</th>
+        <th scope="col">Incoming Address</th>
+        <th scope="col">Outgoing Address</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for object in outstanding_transactions %}
+      <tr>
+        <td>{{object.id}}</td>
+        <td>{{object.wallet.address}}</td>
+        <td>{{object.incoming_address}}</td>
+        <td>{{object.outgoing_address}}</td>
+        <td>{{object.quantity}}</td>
+        <td>
+            <table class="table table-dark">
+                <tr>
+                    <td><a role="button" class="btn btn-danger" href="/admin-dashboard/manage-address/{{object.id}}/approve/" >Cancel</a></td>
+                </tr>
+            </table>
+        </td>
+
+
+      {% endfor %}
+
+
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

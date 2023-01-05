@@ -1,0 +1,364 @@
+:root{
+	--nav-headbg: #fff;
+	--sidebar-bg: #fff;
+	--headerbg: #fff;
+}
+
+//background for nav header
+@each $name, $color in $theme_backgrounds {
+	[data-nav-headerbg="#{$name}"][data-theme-version="dark"],
+    [data-nav-headerbg="#{$name}"] {
+        @if $name != "color_1"  {
+			--nav-headbg: #{$color};
+			
+			.nav-header{
+				.svg-logo-primary-path,
+				.svg-logo-text{
+					fill:$white;
+				}
+				.svg-icon-text{
+					fill:$color;
+				}
+			}
+			
+		}
+	}
+}
+//background for nav header
+@each $name, $color in $theme_backgrounds {
+	[data-sibebarbg="#{$name}"][data-theme-version="dark"],
+    [data-sibebarbg="#{$name}"] {
+        @if $name != "color_1"  {
+			--sidebar-bg: #{$color};
+			
+			&[data-layout="vertical"]{
+				.menu-toggle .deznav .metismenu li > ul {
+					background: lighten($color: $color, $amount: 3%);
+				}
+			}
+			
+			
+			&[data-sidebar-style="full"][data-layout="vertical"] {
+				.deznav{
+					.metismenu {
+						ul a{
+							&:hover,
+							&.mm-active,
+							&:focus,
+							{
+								&:before {
+									border-color: $white;
+								}
+							}
+							&:before {
+								border-color: rgba($white,0.7);
+							}
+						}
+						a{
+							color:rgba($white,0.8);
+						}
+						ul{
+							&>li{
+								&.mm-active,
+								&:hover{
+									a{
+									    color:$white;
+									}
+								}
+							}
+						}
+						& > li{
+							& > a{
+								color:rgba($white,0.8);
+								i{
+									color:rgba($white,0.8);
+								}
+								&:before{
+									background:$white;
+								}
+							}
+							&.mm-active{
+								& > a{
+									color:$white;
+									background: lighten($color: $color, $amount: 3%);
+									i{
+										color:$white;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			&[data-sidebar-style="mini"]{
+				.deznav .metismenu li > ul{
+					background: lighten($color: $color, $amount: 10%);
+				}
+				&[data-layout="vertical"]{
+					.deznav{
+						.metismenu{
+							& > li{
+								&.mm-active,
+								&:hover{
+									& > a{
+										background: lighten($color: $color, $amount: 10%);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			&[data-sidebar-style="compact"]{
+				.deznav {
+					.metismenu{
+						& > li{
+							a{
+								& > i{
+									background: lighten($color: $color, $amount: 3%)!important;
+									color:rgba($white,0.8)!important;
+								}
+							} 
+							&.mm-active,
+							&:hover{
+								& > a{
+									i{
+										color:$white!important;
+										background: lighten($color: $color, $amount: 10%)!important;
+									}
+								}
+							}
+						}
+					}
+				}
+				&[data-layout="horizontal"]{
+					.deznav {
+						.metismenu{
+							& > li{
+								a{
+									& > i{
+										background: transparent;
+										color:rgba($white,0.8);
+									}
+								} 
+								&.mm-active,
+								&:hover{
+									& > a{
+										background: lighten($color: $color, $amount: 10%);
+										i{
+											color:$white;
+											background: transparent;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			&[data-sidebar-style="modern"]{
+				.deznav{
+					.metismenu{
+						&>li{
+							&:hover,
+							&.mm-active{
+								&>a{
+									background: lighten($color: $color, $amount: 10%);
+									i{
+										color:$white;
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				&[data-layout="vertical"]{
+					.deznav .metismenu li ul{
+						background: lighten($color: $color, $amount: 10%);
+					}
+				}
+			}
+			
+			&[data-sidebar-style="overlay"]{
+				.deznav{
+					.metismenu{
+						ul {
+							a {
+								&:hover,
+								&:focus,
+								&.mm-active {
+									&:before{
+										border-color:#fff;
+									}
+								}
+							}
+						}
+						& > li{
+							& > a{
+								color:rgba($white,0.8);
+							}
+							&.mm-active{
+								& > a{
+									background: lighten($color: $color, $amount: 10%);
+									i{
+										color:$white;
+									}
+								}
+							}
+							&:hover{
+								& > a{
+									i{
+										color:$white;
+									}
+								}
+							}
+						} 
+					}
+				}
+				&[data-layout="vertical"]{
+				}
+			}
+			
+			
+			&[data-sidebar-style="icon-hover"]{
+				
+				&[data-layout="vertical"]{
+					.deznav {
+						.metismenu{
+							ul {
+								a {
+									&:hover,
+									&:focus,
+									&.mm-active {
+										&:before{
+											border-color:#fff;
+										}
+									}
+								}
+							}
+							& > li{
+								&.mm-active,
+								&:hover{
+									& > a{
+										background: lighten($color: $color, $amount: 10%);
+										color:$white;
+										i{
+											color:$white;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			&[data-layout="horizontal"]{
+				.deznav{
+					.metismenu{
+						li{
+							& > ul{
+								background: lighten($color: $color, $amount: 10%);
+							}
+						}
+						& > li{
+							&.mm-active,
+							&:hover{
+								& > a{
+									background: lighten($color: $color, $amount: 10%);
+									i{
+										color:$white;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			.deznav{	
+				.metismenu{
+					ul{
+						a{
+							&:hover,
+							&:focus,
+							&.mm-active{
+								color:$white;
+								&:before{
+									border-color:#fff;
+								}
+							}
+							&:before{
+								border-color:rgba($white,0.7);
+							}
+						}
+					}
+					a{
+						color:rgba($white,0.8);
+					}
+					& > li{
+						&.mm-active,
+						&:hover{
+							& > a{
+								color:$white;
+							}
+						}
+					}
+				} 
+				.add-menu-sidebar{
+					background: lighten($color: $color, $amount: 10%);
+				}
+				.copyright{
+					color:rgba($white,0.8);
+				}
+			}
+			
+		}
+	}
+}
+
+//background for nav header
+@each $name, $color in $theme_backgrounds {
+	[data-headerbg="#{$name}"][data-theme-version="dark"],
+    [data-headerbg="#{$name}"] {
+        @if $name != "color_1"  {
+			--headerbg: #{$color};
+			
+			.hamburger .line{
+				background:$white;
+			}
+			
+			.header-left{
+				.dashboard_bar{
+					color:$white;
+				}
+			}
+			
+			.header-right{
+				.notification_dropdown .nav-link{
+					.badge{
+						color:$color!important;
+						background-color:$white!important;
+					}
+					svg path{
+						fill:$white;
+					}
+				}
+				.header-profile{
+					img{
+						box-shadow:none;
+					}
+					.header-info{
+						color:rgba($white,0.8);
+						span{
+							color:$white!important;
+						}
+					}
+				}
+			}
+			
+		}
+	}
+}

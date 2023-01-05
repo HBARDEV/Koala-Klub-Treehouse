@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+    db:
+        build:
+            context: ./api/backend
+            dockerfile: docker/docker_files/Dockerfile.db
+        restart: unless-stopped
+        environment:
+            - POSTGRES_USER=${PROD_DB_USER}
+            - POSTGRES_PASSWORD=${PROD_DB_PASSWORD}
+            - POSTGRES_DB=${PROD_DB_NAME}
+            - POSTGRES_PORT= ${PROD_DB_PORT}
+        networks:
+            - main_tree_house_network
+
+    redis:
+        build:
+            context: ./api/backend
+            dockerfile: docker/docker_files/Dockerfile.redis
+        restart: unless-stopped
+        volumes:
+           - ./api/redis-conf/redis.conf:/usr/local/etc/redis/redis.conf
+        expose:
+            - 6379
+        ports:
+            - "6379:6379"
+        networks:
+            - main_tree_house_network
+    app:
+        build:
+            context: ./api/backend
+            dockerfile: docker/docker_files/Dockerfile.prod
+        platform: linux/amd64
+        restart: unless-stopped
+        command: gunicorn --env DJANGO_SETTINGS_MODULE=api_tree_house.conf.prod api_tree_house.wsgi:application --bind 0.0.0.0:8000
+        ports:
+            - 8000:8000
+        env_file:
+            - .env
+        depends_on:
+            - db
+        networks:
+            - main_tree_house_network
+
+    celery:
+        restart: always
+        build:
+            context: ./api/backend
+            dockerfile: docker/docker_files/Dockerfile.prod
+        command: celery -A api_tree_house worker --loglevel=info --logfile=logs/celery.log
+        env_file:
+            - .env
+        depends_on:
+            - db
+            - redis
+            - app
+        networks:
+            - main_tree_house_network
+      
+    beat:
+        build:
+            context: ./api/backend
+            dockerfile: docker/docker_files/Dockerfile.prod
+        command: celery -A api_tree_house beat -l info
+        env_file:
+            - .env
+        depends_on:
+            - db
+            - redis
+            - app
+        networks:
+            - main_tree_house_network
+
+    nginx:
+        restart: unless-stopped
+        build:
+            context: ./api/backend
+            dockerfile: docker/docker_files/Dockerfile.nginx
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./api/nginx/prod:/etc/nginx/conf.d
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+        networks:
+            - main_tree_house_network
+        depends_on:
+            - app
+    
+networks:
+    main_tree_house_network:
+        driver: bridge
+

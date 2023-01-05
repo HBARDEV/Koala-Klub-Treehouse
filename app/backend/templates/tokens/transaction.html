@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+<h3>Transaction - {{object.id}}</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form>
+                <label for="stock">ID</label>
+                <input type="text" readonly value="{{object.id}}">
+                <label for="stock">Wallet ID</label>
+                <input type="text" readonly value="{{object.wallet.id}}">
+                <label for="stock">Wallet Address</label>
+                <input type="text" readonly value="{{object.wallet.address}}">
+                <label for="stock">transaction Qty</label>
+                <input type="text" readonly value="{{object.quantity}}">
+                <label for="stock">Transaction memo</label>
+                <input type="text" readonly value="{{object.memo}}">
+                {% if object.incoming_address %}
+                <label for="stock">Incoming wallet address</label>
+                <input type="text" readonly value="{{object.incoming_address}}">
+                {% else %}
+
+                <label for="stock">Outgoing wallet address</label>
+                <input type="text" readonly value="{{object.outgoing_address}}">
+                {% endif %}
+
+            </form>
+            {% if object.processing_status == 0  %}
+            <a role="button" class="btn btn-success" href="{% url 'tokens:cancel-transaction' id=object.id %}" >Cancel</a>
+            {% endif %}
+        </div>
+
+    
+</div>
+
+</div>
+{% endblock %}

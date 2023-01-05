@@ -1,0 +1,23 @@
+
+<!--Side nav-->
+{% if request.user.is_authenticated %}
+<ul class="sidenav">
+    {% comment %} <li><a {% if 'account' in request.path %}class="active"{% endif %} href="{% url 'users:account' %}">User Account ({{request.user.username}})</a></li> {% endcomment %}
+    {% if request.user.is_superuser %}
+    <li><a {% if 'admin-dashboard' in request.path %}class="active"{% endif %} href="{% url 'core:admin-dashboard' %}">Admin Dashboard</a></li>
+    {% endif %}
+    {% comment %} <li><a href="{% url 'users:sign-out' %}">Sign Out</a></li> {% endcomment %}
+
+    {% if 'tokens' in installed_apps %}
+    <li><a {% if 'crypto-wallet' in request.path %}class="active"{% endif %}  href="{% url 'tokens:crypto-wallets' %}">Wallets</a></li>
+    <li><a {% if 'transaction' in request.path %}class="active"{% endif %}  href="{% url 'tokens:transactions' %}">Transactions</a></li>
+    <li><a {% if 'address' in request.path %}class="active"{% endif %}  href="{% url 'tokens:address-book' %}">Address Book</a></li>
+
+    {% endif %}
+</ul>
+{% else %}
+<ul class="sidenav">
+    {% comment %} <li><a {% if 'sign-in' in request.path %}class="active"{% endif %} href="{% url 'users:sign-in' %}">Sign in</a></li>
+    <li><a {% if 'sign-up' in request.path %}class="active"{% endif %} href="{% url 'users:sign-up' %}">Sign up</a></li> {% endcomment %}
+</ul>
+{% endif %}

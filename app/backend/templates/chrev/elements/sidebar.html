@@ -1,0 +1,216 @@
+{% load static %}
+
+<div class="deznav">
+    <div class="deznav-scroll">
+        <ul class="metismenu" id="menu">
+
+
+
+
+            {% if perms.users.view_customuser or perms.auth.view_group or perms.auth.view_permission %} 
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                <i class="flaticon-dashboard-1"></i>
+                <span class="nav-text">Admin</span>
+                {% comment %} <span class="badge badge-xs badge-danger ms-1">New</span> {% endcomment %}
+            </a>
+            <ul aria-expanded="false">
+
+                {% if perms.users.view_customuser or perms.users.change_customuser or perms.users.add_customuser or perms.users.delete_customuser %}
+                <li><a href="{% url 'users:users' %}">Users</a></li>
+                {% endif %}
+                {% if perms.auth.view_group or perms.auth.change_group or perms.auth.add_group or perms.auth.delete_group %}
+                <li><a href="{% url 'users:groups' %}">Groups</a></li>
+                {% endif %}
+                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                <li><a href="{% url 'users:permissions' %}">Permissions</a></li>
+                {% endif %}
+                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                <li><a href="{% url 'users:assets' %}">Assets</a></li>
+                {% endif %}
+                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                <li><a href="{% url 'users:invites' %}">Invites</a></li>
+                {% endif %}
+                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                <li><a href="{% url 'users:companies' %}">Companies</a></li> 
+                {% endif %}
+                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                <li><a href="{% url 'users:wallet-submissions' %}">Whitelist</a></li>
+                {% endif %}
+                {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                <li><a href="{% url 'users:transaction-submissions' %}">Transactions</a></li>
+                {% endif %}
+            </ul>
+        </li>
+        {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-dashboard-1"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'tokens:portfolio' %}">Portfolio</a></li>
+                    {% comment %} <li><a href="{% url 'tokens:my-wallet' %}">My Wallet</a></li> {% endcomment %}
+                    {% comment %} <li><a href="{% url 'tokens:coin-details' %}">Coin Details</a></li> {% endcomment %}
+                    <li><a href="{% url 'tokens:transactions' %}">Transactions</a></li>
+                    {% comment %} <li><a href="{% url 'tokens:market-capital' %}">Market Capital</a></li> {% endcomment %}
+                </ul>
+            </li>
+            {% comment %} <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-app-store"></i>
+                    <span class="nav-text">Apps</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'users:app-profile' %}">Profile</a></li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'chrev:email-compose' %}">Compose</a></li>
+                            <li><a href="{% url 'chrev:email-inbox' %}">Inbox</a></li>
+                            <li><a href="{% url 'chrev:email-read' %}">Read</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'chrev:app-calender' %}">Calendar</a></li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Shop</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'chrev:ecom-product-grid' %}">Product Grid</a></li>
+                            <li><a href="{% url 'chrev:ecom-product-list' %}">Product List</a></li>
+                            <li><a href="{% url 'chrev:ecom-product-detail' %}">Product Details</a></li>
+                            <li><a href="{% url 'chrev:ecom-product-order' %}">Order</a></li>
+                            <li><a href="{% url 'chrev:ecom-checkout' %}">Checkout</a></li>
+                            <li><a href="{% url 'chrev:ecom-invoice' %}">Invoice</a></li>
+                            <li><a href="{% url 'chrev:ecom-customers' %}">Customers</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-statistics"></i>
+                    <span class="nav-text">Charts</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'chrev:chart-flot' %}">Flot</a></li>
+                    <li><a href="{% url 'chrev:chart-morris' %}">Morris</a></li>
+                    <li><a href="{% url 'chrev:chart-chartjs' %}">Chartjs</a></li>
+                    <li><a href="{% url 'chrev:chart-chartist' %}">Chartist</a></li>
+                    <li><a href="{% url 'chrev:chart-sparkline'%}">Sparkline</a></li>
+                    <li><a href="{% url 'chrev:chart-peity' %}">Peity</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-exchange"></i>
+                    <span class="nav-text">Bootstrap</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'chrev:ui-accordion' %}">Accordion</a></li>
+                    <li><a href="{% url 'chrev:ui-alert' %}">Alert</a></li>
+                    <li><a href="{% url 'chrev:ui-badge' %}">Badge</a></li>
+                    <li><a href="{% url 'chrev:ui-button' %}">Button</a></li>
+                    <li><a href="{% url 'chrev:ui-modal' %}">Modal</a></li>
+                    <li><a href="{% url 'chrev:ui-button-group' %}">Button Group</a></li>
+                    <li><a href="{% url 'chrev:ui-list-group' %}">List Group</a></li>
+                    <li><a href="{% url 'chrev:ui-media-object' %}">Media Object</a></li>
+                    <li><a href="{% url 'chrev:ui-card' %}">Cards</a></li>
+                    <li><a href="{% url 'chrev:ui-carousel' %}">Carousel</a></li>
+                    <li><a href="{% url 'chrev:ui-dropdown' %}">Dropdown</a></li>
+                    <li><a href="{% url 'chrev:ui-popover' %}">Popover</a></li>
+                    <li><a href="{% url 'chrev:ui-progressbar' %}">Progressbar</a></li>
+                    <li><a href="{% url 'chrev:ui-tab' %}">Tab</a></li>
+                    <li><a href="{% url 'chrev:ui-typography' %}">Typography</a></li>
+                    <li><a href="{% url 'chrev:ui-pagination' %}">Pagination</a></li>
+                    <li><a href="{% url 'chrev:ui-grid' %}">Grid</a></li>
+
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-plugin"></i>
+                    <span class="nav-text">Plugins</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'chrev:uc-select2' %}">Select 2</a></li>
+                    <li><a href="{% url 'chrev:uc-nestable' %}">Nestedable</a></li>
+                    <li><a href="{% url 'chrev:uc-noui-slider' %}">Noui Slider</a></li>
+                    <li><a href="{% url 'chrev:uc-sweetalert' %}">Sweet Alert</a></li>
+                    <li><a href="{% url 'chrev:uc-toastr' %}">Toastr</a></li>
+                    <li><a href="{% url 'chrev:map-jqvmap' %}">Jqv Map</a></li>
+                    <li><a href="{% url 'chrev:uc-lightgallery' %}">LightGallery</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'chrev:widget-basic' %}" class="ai-icon" aria-expanded="false">
+                    <i class="flaticon-badge"></i>
+                    <span class="nav-text">Widget</span>
+                </a>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-form"></i>
+                    <span class="nav-text">Forms</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'chrev:form-element' %}">Form Elements</a></li>
+                    <li><a href="{% url 'chrev:form-wizard' %}">Wizard</a></li>
+                    <li><a href="{% url 'chrev:form-ckeditor' %}">CkEditor</a></li>
+                    <li><a href="{% url 'chrev:form-pickers' %}">Pickers</a></li>
+                    <li><a href="{% url 'chrev:form-validation-jquery' %}">Jquery Validate</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-form-1"></i>
+                    <span class="nav-text">Table</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'chrev:table-bootstrap-basic' %}">Bootstrap</a></li>
+                    <li><a href="{% url 'chrev:table-datatable-basic' %}">Datatable</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-contract"></i>
+                    <span class="nav-text">Pages</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{% url 'chrev:page-register' %}">Register</a></li>
+                    <li><a href="{% url 'chrev:page-login' %}">Login</a></li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'chrev:page-error-400' %}">Error 400</a></li>
+                            <li><a href="{% url 'chrev:page-error-403' %}">Error 403</a></li>
+                            <li><a href="{% url 'chrev:page-error-404' %}">Error 404</a></li>
+                            <li><a href="{% url 'chrev:page-error-500' %}">Error 500</a></li>
+                            <li><a href="{% url 'chrev:page-error-503' %}">Error 503</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'chrev:page-lock-screen' %}">Lock Screen</a></li>
+                </ul>
+            </li> {% endcomment %}
+        </ul>
+    
+        {% comment %} <div class="add-menu-sidebar">
+            <p>Generate Monthly Credit Report</p>
+            <a href="javascript:void(0);">
+            <svg width="24" height="12" viewBox="0 0 24 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.725 5.14889C23.7248 5.14861 23.7245 5.14828 23.7242 5.148L18.8256 0.272997C18.4586 -0.0922062 17.865 -0.0908471 17.4997 0.276184C17.1345 0.643169 17.1359 1.23675 17.5028 1.602L20.7918 4.875H0.9375C0.419719 4.875 0 5.29472 0 5.8125C0 6.33028 0.419719 6.75 0.9375 6.75H20.7917L17.5029 10.023C17.1359 10.3882 17.1345 10.9818 17.4998 11.3488C17.865 11.7159 18.4587 11.7172 18.8256 11.352L23.7242 6.477C23.7245 6.47672 23.7248 6.47639 23.7251 6.47611C24.0923 6.10964 24.0911 5.51414 23.725 5.14889Z" fill="white"/>
+            </svg>
+            </a>
+        </div>
+        <div class="copyright">
+            <p><strong>Chrev - Crypto Admin Dashboard</strong> © 2022 All Rights Reserved</p>
+            <p>Made with <i class="fa fa-heart"></i> by DexignZone</p>
+        </div> {% endcomment %}
+    </div>
+</div>

@@ -1,0 +1,368 @@
+	{% extends 'chrev/elements/layouts/admin.html' %}
+{% load static %}
+
+
+{% block additional_css %}
+ 
+{% endblock %}
+
+
+
+{% block message %}
+{% include 'chrev/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<div id="message">
+</div>     
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">External Wallet Table</h4>
+                    
+                    <div class="d-flex">
+
+                        {% if perms.users.delete_customuser %}
+                       
+                        <button type="submit" id="approve_multiple_btn" class="btn light btn-outline-success btn-sm me-2 ">Approve</button>
+                        <button type="submit" id="reject_multiple_btn" class="btn light btn-outline-danger btn-sm me-2 ">Reject</button>
+                        
+                        {% endif %}
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-responsive-md">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg">
+                                            <input  type="checkbox" class="form-check-input" id="checkAll" value="">
+                                            <label class="form-check-label" for="checkAll"></label>
+                                        </div>
+                                    </th>
+                                   
+                                    <th>Created</th>
+                                    <th>User</th>
+                                    <th>Wallet Name</th>
+                                    <th>Asset</th>
+                                    <th>Status</th>
+
+
+                                    {% if perms.users.delete_customuser or perms.users.change_customuser or perms.auth.change_permission %}
+                                    <th></th>
+                                    {% endif %}
+
+
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% csrf_token %}
+                                {% for wallet in wallets %}
+                                <tr id="{{ wallet.id }}">
+                                    <td>
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
+                                            <input name="wallet_id[]" type="checkbox" class="form-check-input" value="{{ wallet.id }}">
+                                            <label class="form-check-label" for="checkbox-{{ wallet.id }}"></label>
+                                        </div>
+                                    </td>
+
+                                    <td><strong>{{ wallet.created.date }}</strong></td>
+
+                                    <td>
+                                        <a href="{% url 'users:user-details' id=wallet.user.id %}">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ wallet.user.avatar.url }}" class="rounded-lg me-2" width="24" alt=""> 
+                                            <span class="w-space-no">{{ wallet.user.first_name }} {{ wallet.user.last_name }}</span>
+                                        </div>
+                                        </a>
+                                    </td>
+                                    
+                                    <td><strong>{{ wallet.name }}</strong></td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ wallet.asset.image.url }}" class="rounded-lg me-2" width="24" alt=""> 
+                                            <span class="w-space-no">{{ wallet.asset.title}}</span>
+                                        </div>
+                                    </td>
+
+                                    <td><strong>{{ wallet.get_status }}</strong></td>
+
+                                    <td>
+                                        <div class="sweetalert">
+                                            <div class="d-flex">
+                                                {% if perms.users.delete_customuser %}
+                                                <a href="{% url 'users:approve-wallet-submission' id=wallet.id %}" class="btn btn-success shadow btn-xs sharp sweet-success-approve"><i class="fas fa-pencil-alt text-white"></i></a>
+                                                <a href="{% url 'users:reject-wallet-submission' id=wallet.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-reject"><i class="fas fa-pencil-alt text-white"></i></a>
+                                                {% endif %}
+                                            </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <nav mt-5>
+
+                        <p>
+                            <span class="current">
+                            Page {{ wallets.number }} of {{ wallets.paginator.num_pages }}.
+                           </span> 
+                           </p>
+                           
+
+                        <ul class="pagination pagination-gutter  justify-content-end">
+                            
+                                <li class="page-item page-indicator ">
+                                    <a class="page-link" href="{% if wallets.has_previous %}
+                                                                ?page={{ wallets.previous_page_number }}
+                                                                {% else %}
+                                                                javascript:void(0);
+                                                                {% endif %}">
+                                        <i class="la la-angle-left"></i></a>
+                                </li>
+
+                            {% for i in wallets.paginator.page_range|slice:":3" %}
+
+                                <li class="page-item {% if wallets.number == i %}
+                                                    active{% endif %}"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                            
+                            {% endfor %}
+
+                            
+                            {% if wallets.number > 3 %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ wallets.number }}">{{ wallets.number }}</a></li>
+                            {% endif %}
+                            
+                            <li class="page-item page-indicator ">
+                                <a class="page-link"  href="{% if wallets.has_next %}
+                                                            ?page={{ wallets.next_page_number }}
+                                                            {% else %}
+                                                            javascript:void(0);
+                                                            {% endif %}">
+                                    <i class="la la-angle-right"></i></a>
+                            </li>
+                            <li>
+
+                              
+
+                            </li>
+                        </ul>
+                       
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+
+$(document).ready(function(){
+
+
+$('#approve_multiple_btn').on('click', function () {
+    event.preventDefault();
+    const url = $(this).attr('href');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        type: "info",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: "Yes, approve it !!",
+        confirmButtonText: 'Approve',
+        confirmButtonColor: "#00FF00"
+        
+    }).then((result) => {
+        if (result.value) {
+        var id = [];
+
+        $(':checkbox:checked').each(function(i){
+            id[i]=$(this).val();
+        });
+
+        if(id.length===0){
+            alert("Please select items to approve")
+        }else{
+            console.log(id);
+            $.ajax({
+                url:"/approve-multiple-wallet-submission/",
+                method:"POST",
+                dataType:'json',
+                data:{
+                    id,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success:function(res){
+                    if(res.warning){
+                        document.getElementById("message").innerHTML += '<div class="alert alert-warning alert-dismissible alert-alt solid fade show">\
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">\
+                            </button>'+res.warning+'</div>';
+
+                    }
+                    if(res.success){
+
+                        for(var i=0; i < id.length; i++){
+                            $('tr#'+id[i]+'').css('background-color','#ccc');
+                            // $('tr#'+id[i]+'').fadeOut('slow');
+                            $('tr#'+id[i]+'').remove(); 
+                        }
+
+                        document.getElementById("message").innerHTML += '<div class="alert alert-success alert-dismissible alert-alt solid fade show">\
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"> </button>\
+                        '+res.success+'</div>';
+
+
+
+                    }
+                    
+                }
+            })
+        }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            event.preventDefault();
+        }
+    })
+
+});
+
+
+});
+
+
+$('#reject_multiple_btn').on('click', function () {
+    event.preventDefault();
+    const url = $(this).attr('href');
+
+    Swal.fire({
+        title: 'Are you sure?',
+        type: "warning",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: "Yes, reject it !!",
+        confirmButtonText: 'Reject',
+        confirmButtonColor: "#FF0000"
+        
+    }).then((result) => {
+        if (result.value) {
+        var id = [];
+
+        $(':checkbox:checked').each(function(i){
+            id[i]=$(this).val();
+        });
+
+        if(id.length===0){
+            alert("Please select items to reject")
+        }else{
+            console.log(id);
+            $.ajax({
+                url:"/reject-multiple-wallet-submission/",
+                method:"POST",
+                dataType:'json',
+                data:{
+                    id,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success:function(res){
+                    if(res.warning){
+                        document.getElementById("message").innerHTML += '<div class="alert alert-warning alert-dismissible alert-alt solid fade show">\
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">\
+                            </button>'+res.warning+'</div>';
+
+                    }
+                    if(res.success){
+
+                        for(var i=0; i < id.length; i++){
+                            $('tr#'+id[i]+'').css('background-color','#ccc');
+                            // $('tr#'+id[i]+'').fadeOut('slow');
+                            $('tr#'+id[i]+'').remove(); 
+                        }
+
+                        document.getElementById("message").innerHTML += '<div class="alert alert-success alert-dismissible alert-alt solid fade show">\
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"> </button>\
+                        '+res.success+'</div>';
+
+
+
+                    }
+                    
+                }
+            })
+        }
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            event.preventDefault();
+        }
+    })
+
+});
+
+
+
+
+    $('.sweet-success-approve').on('click', function (event) {
+           event.preventDefault();
+           const url = $(this).attr('href');
+   
+           Swal.fire({
+               title: 'Are you sure?',
+               type: "info",
+               icon: 'question',
+               showCancelButton: true,
+               confirmButtonText: "Yes, approve it !!",
+               confirmButtonText: 'Approve',
+               confirmButtonColor: "#00FF00"
+               
+           }).then((result) => {
+               if (result.value) {
+                   window.location.href = url;
+               } else if (result.dismiss === Swal.DismissReason.cancel) {
+                   event.preventDefault();
+               }
+           })
+       });
+
+
+    $('.sweet-success-reject').on('click', function (event) {
+        event.preventDefault();
+        const url = $(this).attr('href');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            type: "warning",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: "Yes, reject it !!",
+            confirmButtonText: 'Reject',
+            confirmButtonColor: "#FF0000"
+            
+        }).then((result) => {
+            if (result.value) {
+                window.location.href = url;
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                event.preventDefault();
+            }
+        })
+    });
+   </script>
+   
+{% endblock %}
+

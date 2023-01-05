@@ -1,0 +1,160 @@
+	{% extends 'chrev/elements/layouts/admin.html' %}
+{% load static %}
+
+
+{% block additional_css %}
+ 
+{% endblock %}
+
+
+
+{% block message %}
+{% include 'chrev/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<div id="message">
+</div>     
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Assets Table</h4>
+                    
+                    <div class="d-flex">
+
+                        {% if perms.users.add_customuser %}
+                        <a href="{% url 'users:add-asset' %}" class="btn btn-primary btn-sm ">ADD ASSET  <span class="btn-icon-end">
+                            <i class="fa fa-plus"></i></span>
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-responsive-md">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg">
+                                            <input  type="checkbox" class="form-check-input" id="checkAll" value="">
+                                            <label class="form-check-label" for="checkAll"></label>
+                                        </div>
+                                    </th>
+                                   
+                                    <th>Created</th>
+                                    <th>Asset</th>
+
+
+                                    {% if perms.users.delete_customuser or perms.users.change_customuser or perms.auth.change_permission %}
+                                    <th></th>
+                                    {% endif %}
+
+
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% csrf_token %}
+                                {% for asset in assets %}
+                                <tr id="{{ asset.id }}">
+                                    <td>
+                                        <div class="form-check custom-checkbox checkbox-primary check-lg me-3">
+                                            <input name="asset_id[]" type="checkbox" class="form-check-input" value="{{ asset.id }}">
+                                            <label class="form-check-label" for="checkbox-{{ asset.id }}"></label>
+                                        </div>
+                                    </td>
+
+                                    <td><strong>{{ asset.created.date }}</strong></td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset.image.url }}" class="rounded-lg me-2" width="24" alt=""> 
+                                            <span class="w-space-no">{{ asset.title}}</span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="sweetalert">
+                                            <div class="d-flex">
+                                                {% if perms.users.delete_customuser %}
+                                                <a href="{% url 'users:edit-asset' id=asset.id %}" class="btn btn-success shadow btn-xs sharp sweet-success-edit"><i class="fas fa-pencil-alt text-white"></i></a>
+                                               
+                                                {% endif %}
+                                            </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <nav mt-5>
+
+                        <p>
+                            <span class="current">
+                            Page {{ assets.number }} of {{ assets.paginator.num_pages }}.
+                           </span> 
+                           </p>
+                           
+
+                        <ul class="pagination pagination-gutter  justify-content-end">
+                            
+                                <li class="page-item page-indicator ">
+                                    <a class="page-link" href="{% if assets.has_previous %}
+                                                                ?page={{ assets.previous_page_number }}
+                                                                {% else %}
+                                                                javascript:void(0);
+                                                                {% endif %}">
+                                        <i class="la la-angle-left"></i></a>
+                                </li>
+
+                            {% for i in assets.paginator.page_range|slice:":3" %}
+
+                                <li class="page-item {% if assets.number == i %}
+                                                    active{% endif %}"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                            
+                            {% endfor %}
+
+                            
+                            {% if assets.number > 3 %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ assets.number }}">{{ assets.number }}</a></li>
+                            {% endif %}
+                            
+                            <li class="page-item page-indicator ">
+                                <a class="page-link"  href="{% if assets.has_next %}
+                                                            ?page={{ assets.next_page_number }}
+                                                            {% else %}
+                                                            javascript:void(0);
+                                                            {% endif %}">
+                                    <i class="la la-angle-right"></i></a>
+                            </li>
+                            <li>
+
+                              
+
+                            </li>
+                        </ul>
+                       
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+
+
+{% endblock %}
+
+
+{% block additional_js %}
+
+
+   
+{% endblock %}
+

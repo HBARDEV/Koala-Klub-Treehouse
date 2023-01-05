@@ -1,0 +1,161 @@
+.owl-bank-wallet{
+	.owl-stage-outer{
+	    padding: 7% 0;
+	}
+	.active.center{
+		.card-bx{
+			transform: scale(1.5);
+			z-index:1;
+		}
+	}
+	.card-bx{
+		position:relative;
+		@include transitionMedium;
+		.cr-logo{
+			width: 40px;
+		}
+		.card-info{
+			padding: 30px 30px;
+		}
+		.pattern-img{
+			position: absolute;
+			height: 100%;
+			z-index: -1;
+			left: 0;
+			top: 0;
+		}
+		.dots-img{
+			width: 52px;
+		}
+		@include custommq($max: 1600px , $min:1200px) {
+			p{
+				font-size:10px!important;
+			}
+			.cr-logo{
+				width: 18px;
+				
+			}
+			.card-info{
+				h3{
+					font-size:14px;
+				}
+			}
+			.dots-img{
+				width: 25px;
+			}
+			.fs-11{
+				font-size:8px!important;
+			}
+			.card-info{
+				padding: 22px 13px;
+			}
+		}
+	}
+	&.owl-nav-text{
+		.card-bx{
+			.card-info{
+				opacity:0;
+			}
+		}
+		.active.center{
+			.card-bx{
+				.card-info{
+					opacity:1;
+				}
+			}
+		}
+		.owl-nav{
+			.owl-prev,
+			.owl-next{
+				cursor:pointer;
+				writing-mode: tb;
+				position:absolute;
+				top:50%;
+				color:$white;
+				font-size: 18px;
+				transform: rotate(180deg) translateY(50%);
+				i{
+					margin-top: 10px;
+				}
+			}
+			.owl-prev{
+				left:30px;
+			}
+			.owl-next{
+				right:30px;
+			}
+		}
+	}
+	@include respond ('phone'){
+		.active.center{
+			.card-bx{
+				transform: scale(1);
+			}
+		}
+	}
+}
+
+.top-up-bx{
+	background:var(--primary);
+	position:relative;
+	overflow:hidden;
+	float:left;
+	z-index:1;
+	.icon-btn{
+		height:63px;
+		width:63px;
+		background:$white;
+		text-align:center;
+		line-height:63px;
+		border-radius:3px;
+	}
+	&:after{
+		content:"";
+		background-image:url('../images/top.svg');
+		top:20px;
+		left:20px;
+		position:absolute;
+		z-index:-1;
+		height: 100%;
+		width: 100%;
+		background-repeat: no-repeat;
+	}
+}
+.withdraw-bx{
+	background:var(--primary-dark);
+	z-index:1;
+	overflow:hidden;
+	float:left;
+	position:relative;
+	.icon-btn{
+		height:63px;
+		width:63px;
+		background:$white;
+		text-align:center;
+		line-height:63px;
+		border-radius:3px;
+	}
+	&:after{
+		content:"";
+		background-image:url('../images/bottom.svg');
+		bottom:20px;
+		left:20px;
+		z-index:-1;
+		position:absolute;
+		height: 100%;
+		width: 100%;
+		background-repeat: no-repeat;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,133 @@
+version: '3'
+
+services:
+    
+    db:
+        image: "${PROD_DB_IMAGE}"
+        restart: unless-stopped
+        environment:
+            - POSTGRES_USER=${PROD_DB_USER}
+            - POSTGRES_PASSWORD=${PROD_DB_PASSWORD}
+            - POSTGRES_DB=${PROD_DB_NAME}
+            - POSTGRES_PORT= ${PROD_DB_PORT}
+        container_name: tree_house_db_prod
+        networks:
+            - main_tree_house_network
+
+    redis:
+        image: "${PROD_REDIS_IMAGE}"
+        restart: unless-stopped
+        volumes:
+           - ./redis-conf/redis.conf:/usr/local/etc/redis/redis.conf
+        command: redis-server /usr/local/etc/redis/redis.conf
+        expose:
+            - 6379
+        ports:
+            - "6379:6379"
+        networks:
+            - main_tree_house_network
+        container_name: tree_house_redis_prod
+
+
+
+    app:
+        image: "${PROD_APP_IMAGE}"
+        restart: unless-stopped
+        command: gunicorn --env DJANGO_SETTINGS_MODULE=sammy.conf.prod sammy.wsgi:application --bind 0.0.0.0:8000
+        ports:
+            - 8000:8000
+        env_file:
+            - .env
+        volumes:
+            - ./backend:/home/app/backend
+        depends_on:
+            - db
+        networks:
+            - main_tree_house_network
+        container_name: tree_house_django_app_prod
+      
+    celery_worker:
+        restart: unless-stopped
+        image: "${PROD_CELERY_IMAGE}"
+        command: celery -A sammy worker --loglevel=info --logfile=logs/celery.log
+        env_file:
+            - .env
+        volumes:
+            - ./backend:/home/app/backend
+        depends_on:
+            - db
+            - redis
+            - app
+        networks:
+            - main_tree_house_network
+        container_name: tree_house_celery_worker_prod
+
+    celery-beat:
+        restart: unless-stopped
+        image: "${PROD_BEAT_IMAGE}"
+        command: celery -A sammy beat -l info
+        env_file:
+            - .env
+        volumes:
+            - ./backend:/home/app/backend
+        depends_on:
+            - db
+            - redis
+            - app
+        networks:
+            - main_tree_house_network
+        container_name: tree_house_celery_beat_prod
+
+    flower:
+        image: "${PROD_FLOWER_IMAGE}"
+        restart: unless-stopped
+        command: "celery -A sammy flower  
+                --broker=redis://redis:6379//
+                --env-file=..env
+                --basic_auth=${SUPER_USER_NAME}:${SUPER_USER_PASSWORD}"
+        ports:
+            - 5555:5555
+        volumes:
+            - ./backend:/home/app/backend
+        networks:
+            - main_tree_house_network
+        env_file:
+            - .env
+        depends_on:
+            - db
+            - app
+            - redis
+            - celery_worker
+        container_name: tree_house_flower_prod
+
+    nginx:
+        container_name: tree_house_nginx_prod
+        restart: unless-stopped
+        image: "${PROD_NGINX_IMAGE}"
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx/prod:/etc/nginx/conf.d
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+        networks:
+            - main_tree_house_network
+        depends_on:
+            - app
+    
+    certbot:
+        container_name: tree_house_certbot_prod
+        image: "${PROD_CERTBOT_IMAGE}"
+        volumes:
+            - ./data/certbot/conf:/etc/letsencrypt
+            - ./data/certbot/www:/var/www/certbot
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+
+
+networks:
+    main_tree_house_network:
+        driver: bridge
+
